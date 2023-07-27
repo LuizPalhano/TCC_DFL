@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, Alert } from 'react-native';
 
 //Função root; rodada sempre e sempre primeiro
 export default function App() {
@@ -8,16 +8,24 @@ export default function App() {
       <View style = {{alignItems: 'center'}}>
         <Text style = {styles.textStyle}>Hello, world!</Text>
       </View>
+      <View style = {{alignItems: 'center'}}>
+        <Button
+        title = "Press a button!"
+        onPress={() => Alert.alert('Button pressed')}
+        />
+      </View>
     </View>
   );
 }
+
+
 
 //Stylesheet guarda os estilos do app
 const styles = StyleSheet.create({
   //Estilo geral de fundo de tela
   backgroundStyle: {
     flex: 1,
-    backgroundColor: 'cyan'
+    backgroundColor: 'orange'
   },
 
   //Estilo geral de botão
