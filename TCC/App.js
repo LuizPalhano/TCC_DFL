@@ -6,7 +6,7 @@ export default function App() {
     <View style = {styles.backgroundStyle}>
       <View style = {{padding: '8%'}}></View>
       <View style = {{alignItems: 'center'}}>
-        <Text style = {styles.textStyle}>Hello, world!</Text>
+        <Text style = {styles.textStyle}>Luffy será o rei dos piratas!</Text>
       </View>
       <View style = {{alignItems: 'center'}}>
         <Button
