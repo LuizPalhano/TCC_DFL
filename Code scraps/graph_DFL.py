@@ -63,11 +63,14 @@ class Graph:
     
     #Cria uma cópia temporária do próprio grafo para adicionar arestas temporárias. Caso a operação de adição de aresta tenha sucesso,
     #faz a adição de aresta no grafo real. Do contrário, aborta o processo
+    #Caso o processo tenha sucesso, também atualiza a cardinalidade dos vértices do grafo
     #Recebe o nome de dois vértices e cria a aresta entre eles, além de todas as outras que são consequência
     def addEdge(self, greaterNode, lesserNode):
         tempGraph = copy.deepcopy(self)
         if tempGraph.getNode(greaterNode).addNeighbor(tempGraph.getNode(lesserNode), self):
             self.getNode(greaterNode).addNeighbor(self.getNode(lesserNode), self)
+            for vertex in self.nodeByName.values():
+                vertex.updateCardinality()
 
 '''
 Classe Nó, representa os nós dentro do grafo. Cada nó tem um nome e um conjunto (set) de vizinhos de entrada e de saída.
@@ -86,6 +89,8 @@ class Node:
         self.incomingNeighbors = incomingNeighbors
         #Vizinhos de saída do nó; guardado como um conjunto de strings
         self.outgoingNeighbors = outgoingNeighbors
+        #Cardinalidade do nó; guardada como um inteiro
+        self.cardinality = 0
     
     #Adiciona um novo vizinho de saída ao nó. Ao fazer isso:
     #Cada vizinho de entrada do nó atual e o próprio nó atual passam a ser vizinhos de entrada do novo nó; ciclo aborta o processo.
@@ -115,3 +120,12 @@ class Node:
             if not isWorking:
                 return False
         return True
+    
+    #Mostra a cardinalidade do vértice
+    def showCardinality(self):
+        print("\nCardinalidade do vértice " + self.name + ":")
+        print(self.cardinality)
+
+    #Atualiza a cardinalidade do vértice
+    def updateCardinality(self):
+        self.cardinality = len(self.incomingNeighbors) + len(self.outgoingNeighbors)

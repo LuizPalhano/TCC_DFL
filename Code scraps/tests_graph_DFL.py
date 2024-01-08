@@ -297,6 +297,27 @@ def testAddValidNeighbor():
     print("\nMostra o grafo com todas as arestas")
     secondGraph.showGraph()
 
+#Testa showCardinality
+def testShowCardinality():
+    print("\n=========================")
+    print("=========================")
+    print("Testa showCardinality")
+    print("=========================")
+    print("=========================")
+    for vertex in secondGraph.nodeByName.values():
+        vertex.showCardinality()
+
+#Testa updateCardinality
+def testUpdateCardinality():
+    print("\n=========================")
+    print("=========================")
+    print("Testa updateCardinality")
+    print("=========================")
+    print("=========================")
+    for vertex in secondGraph.nodeByName.values():
+        vertex.updateCardinality()
+        vertex.showCardinality()
+
 #Testa todos os métodos de Node
 def testNode():
     print("=========================")
@@ -305,7 +326,9 @@ def testNode():
     print("=========================")
     print("=========================")
 
-    testAddValidNeighbor()
+    #testAddValidNeighbor()
+    testShowCardinality()
+    #testUpdateCardinality()
 
 #Testa todos os métodos
 def testAll():
@@ -315,5 +338,5 @@ def testAll():
 Executa os testes
 '''
 testGraph()
-#testNode()
+testNode()
 #testAll()
