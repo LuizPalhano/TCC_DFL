@@ -223,6 +223,18 @@ def testAddEdge():
     print("\nMostra o grafo com todas as arestas")
     secondGraph.showGraph()
 
+#Testa getCardinalityList
+def testGetCardinalityList():
+    print("=========================")
+    print("=========================")
+    print("Testa getCardinalityList")
+    print("=========================")
+    print("=========================")
+
+    lst = secondGraph.getCardinalityList()
+    print("Lista de cardinalidades:")
+    print(lst)
+
 #Testa os métodos de Grafo
 def testGraph():
     print("=========================")
@@ -256,6 +268,8 @@ def testGraph():
     testRemoveInexistentNode()
     
     testAddEdge()
+
+    testGetCardinalityList()
 
 '''
 TESTES DE NODE

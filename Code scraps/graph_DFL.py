@@ -60,6 +60,18 @@ class Graph:
         else:
             for node in self.nodeByName:
                 self.showNode(node)
+
+    #Gera uma lista que contém as cardinalidades dos vértices ordenadas.
+    def getCardinalityList(self):
+        if len(self.nodeByName) == 0:
+            print("\nGraph is empty.")
+        else:
+            ret = []
+            for vertex in self.nodeByName.values():
+                vertex.updateCardinality()
+                ret.append(vertex.cardinality)
+            ret.sort()
+            return ret
     
     #Cria uma cópia temporária do próprio grafo para adicionar arestas temporárias. Caso a operação de adição de aresta tenha sucesso,
     #faz a adição de aresta no grafo real. Do contrário, aborta o processo
