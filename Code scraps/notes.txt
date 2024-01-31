@@ -1,0 +1,4 @@
+Métodos de preenchimento do grafo:
+-Completamente aleatório (randomChoice)
+-Escolhe sempre a cardinalidade mais alta dentre os vértices que não são relacionados entre si ainda (popularChoice)
+-Descarta o pior entre dois arbitrários e compara o que ficou com um próximo (snakeChoice)
