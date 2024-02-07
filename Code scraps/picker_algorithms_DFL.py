@@ -1,5 +1,6 @@
 import graph_DFL as grafo
 import random
+import copy
 
 '''
 Estabelece os objetos a serem incluídos no grafo
@@ -59,18 +60,89 @@ newGraph.addNode(node_H.name, node_H.incomingNeighbors, node_H.outgoingNeighbors
 newGraph.addNode(node_I.name, node_I.incomingNeighbors, node_I.outgoingNeighbors)
 newGraph.addNode(node_J.name, node_J.incomingNeighbors, node_J.outgoingNeighbors)
 
+#Função auxiliar de checagem de completude do grafo
+#Quando o grafo é completo, todas as cardinalidades são iguais a N - 1; se uma for diferente, não está completo
+def checkCompleteness(candidateGraph):
+    cardinalities = candidateGraph.getCardinalityList()
+    highestCardinality = candidateGraph.graphSize - 1
+    for cardinality in cardinalities:
+        if cardinality != highestCardinality:
+            return False
+    return True
+
 '''
 Define as funções de preenchimento do grafo
 '''
-def randomChoice():
-    return
+#Pergunta para cada vértice a relação com cada outro vértice
+def naiveChoice(thisGraph):
+    #Para cada nó do grafo
+    for node in thisGraph.nodesList:
+        #Pergunta para cada outro nó do grafo a relação entre os dois
+        for neighbor in thisGraph.nodesList:
+            #Exceto ele próprio
+            if node == neighbor:
+                continue
+            #Moeda honesta é usada para simular a escolha entre um ou outro
+            if random.randint(0, 1):
+                thisGraph.addEdge(node, neighbor)
+            else:
+                thisGraph.addEdge(neighbor, node)
 
-def popularChoice():
-    return
+#Sempre escolhe dois vértices completamente aleatórios a cada rodada
+#Caso a relação entre os vértices já exista, simplesmente segue em frente
+def randomChoice(thisGraph):
+    isDone = False
+    while not isDone:
+        #Escolhe dois nós aleatórios; garantidamente são nós distintos
+        nodes = copy.deepcopy(thisGraph.nodesList)
+        firstNode = random.choice(nodes)
+        nodes.remove(firstNode)
+        secondNode = random.choice(nodes)
+        
+        #Como os dois nós escolhidos são aleatórios, também podemos presumir que
+        #a ordenação deles é exatamente essa
+        thisGraph.addEdge(firstNode, secondNode)
+        
+        #Ao terminar a iteração atual, checa a completude do grafo
+        isDone = checkCompleteness(thisGraph)
 
-def snakeChoice():
-    return
+#Pega dois vértices arbitrários e pergunta a relação entre eles; mantém o que foi escolhido em mãos
+#e pega outro arbitrário para substituir o que não foi escolhido
+#Notavelmente, um usuário faria a escolha de A ou B, mas, para propósitos práticos, a simulação disso
+#é feita por aleatoriedade
+def snakeChoice(thisGraph):
+    isDone = False
+    #Escolhe dois nós aleatórios; garantidamente são nós distintos
+    nodes = copy.deepcopy(thisGraph.nodesList)
+    firstNode = random.choice(nodes)
+    secondNode = random.choice(nodes)
+    while firstNode == secondNode:
+        secondNode = random.choice(nodes)
+    
+    while not isDone:
+        #Joga uma moeda honesta para escolher um dos nós para ser o nó maior
+        if random.randint(0, 1):
+            #Se for o primeiro, joga o segundo fora e itera
+            thisGraph.addEdge(firstNode, secondNode)
+            secondNode = random.choice(nodes)
+            while firstNode == secondNode:
+                secondNode = random.choice(nodes)
+        else:
+            #Se for o segundo, joga o primeiro fora e itera
+            thisGraph.addEdge(secondNode, firstNode)
+            firstNode = random.choice(nodes)
+            while firstNode == secondNode:
+                firstNode = random.choice(nodes)
+            
+        #Ao terminar a iteração atual, checa a completude do grafo
+        isDone = checkCompleteness(thisGraph)
 
-#randomChoice()
-#popularChoice()
-#snakeChoice()
+#Chama um método para preencher o grafo, e depois o exibe
+print("Algoritmo escolhido: NaiveChoice")
+naiveChoice(newGraph)
+#print("Algoritmo escolhido: RandomChoice")
+#randomChoice(newGraph)
+#print("Algoritmo escolhido: SnakeChoice")
+#snakeChoice(newGraph)
+        
+newGraph.showGraph()

@@ -11,6 +11,11 @@ class Graph:
     def __init__(self):
         #Nós do grafo são guardados em um dicionário para fácil acesso. O dicionário é formatado como {string : Node}
         self.nodeByName = {}
+        #Nós do grafo também são guardados em uma lista para acesso da função randomChoice. Guardados pelo nome, em string
+        #Não é acessado por nenhum outro lugar
+        self.nodesList = []
+        #Tamanho do grafo é guardado como um inteiro. Acessado para calcular a cardinalidade máxima
+        self.graphSize = 0
     
     #Retorna um dado nó. Retorna o tipo Node, caso o node exista; não retorna nada, do contrário.
     def getNode(self, nodeName):
@@ -26,12 +31,16 @@ class Graph:
         else:
             newNode = Node(nodeName, incomingNeighbors, outgoingNeighbors)
             self.nodeByName.update({newNode.name : newNode})
+            self.nodesList.append(newNode.name)
+            self.graphSize += 1
 
     #Remove um nó do grafo, caso ainda esteja lá.
     def removeNode(self, nodeName):
         if nodeName not in self.nodeByName:
             print("\nNode does not exist.")
         else:
+            self.graphSize -= 1
+            self.nodesList.remove(nodeName)
             self.nodeByName.pop(nodeName)
             for node in self.nodeByName.values():
                 if nodeName in node.incomingNeighbors:
