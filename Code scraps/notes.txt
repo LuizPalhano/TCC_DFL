@@ -1,4 +1,4 @@
 Métodos de preenchimento do grafo:
+-Itera por cada nó e pergunta qual a relação dele com cada outro nó (naiveChoice)
 -Completamente aleatório (randomChoice)
--Escolhe sempre a cardinalidade mais alta dentre os vértices que não são relacionados entre si ainda (popularChoice)
 -Descarta o pior entre dois arbitrários e compara o que ficou com um próximo (snakeChoice)
