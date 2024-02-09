@@ -2,3 +2,13 @@ Métodos de preenchimento do grafo:
 -Itera por cada nó e pergunta qual a relação dele com cada outro nó (naiveChoice)
 -Completamente aleatório (randomChoice)
 -Descarta o pior entre dois arbitrários e compara o que ficou com um próximo (snakeChoice)
+
+O que diferencia o randomChoice do snakeChoice é o escalar, uma vez que os dois são lineares em O(n). Qual escalar é o melhor?
+
+São lineares porque a demora para preenchimento depende do tamanho da amostra: não existem nested loops que levam a quadraticidade, e definitivamente não é exponencial.
+A demora maior ou menor depende também da função de aleatoriedade que rege a escolha do próximo nó ou par de nós, mas essa função independe do tamanho da amostra, e, logo,
+não influencia na complexidade.
+
+A última pergunta é se os addEdges demoram mais ou menos. A função em si é O(n), uma vez que novamente não tem nested loop nem nada exponencial, mas eles podem demorar mais
+ou menos dependendo de quão fundo a função tem que olhar para descobrir que o novo vizinho é inválido. Entretanto, no absoluto máximo, a função pode precisar olhar n-2
+vizinhos para chegar à conclusão que é inválido. Ou seja, Os addEdges não são piores do que a própria função de aleatoriedade que escolheu o nó ou par de nós.
