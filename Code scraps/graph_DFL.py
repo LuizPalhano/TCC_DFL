@@ -122,7 +122,7 @@ class Node:
     def addNeighbor(self, newNeighbor, currentGraph):
         #Verifica que não encontrou loop
         if (self.name in newNeighbor.outgoingNeighbors) or (newNeighbor.name in self.incomingNeighbors):
-            print("\nLoop detected. Aborting new neighbor.")
+            #print("\nLoop detected. Aborting new neighbor.")
             return False
         #Adiciona si mesmo ao novo vizinho
         newNeighbor.incomingNeighbors.add(self.name)
