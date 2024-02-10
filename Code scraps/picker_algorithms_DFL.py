@@ -180,7 +180,7 @@ def snakeChoice(thisGraph):
 ''''
 Bloco de execução dos algoritmos; não executar ao mesmo tempo que o bloco de execução repetida
 '''
-#'''
+'''
 #Chama um método para preencher o grafo, e depois o exibe
 #print("Algoritmo escolhido: NaiveChoice")
 #nSteps = naiveChoice(newGraph)
@@ -192,32 +192,40 @@ nSteps = randomChoice(newGraph)
 newGraph.showGraph()
 print("\nNúmero de iterações: ")
 print(nSteps)
-#'''
+
+print("resetando o grafo")
+newGraph.resetGraph()
+print("grafo vazio:")
+newGraph.showGraph()
+randomChoice(newGraph)
+newGraph.showGraph()
+'''
 
 '''
 Bloco de execução repetida dos algoritmos; não executar ao mesmo tempo que o bloco de execução simples
 '''
-'''
+#'''
 #Executa o algoritmo escolhido um número grande de vezes para normalizar o número médio de
 #iterações que cada um requer. Retorna a média de iterações
-def generateAverageRuns():
-    nIterations = 1000
+def generateAverageRuns(thisGraph):
+    nIterations = 10000
     iterationsList = []
     
     #Executa o algoritmo escolhido nIterations vezes
     #print("Algoritmo escolhido: NaiveChoice")
-    print("Algoritmo escolhido: RandomChoice")
-    #print("Algoritmo escolhido: SnakeChoice")
+    #print("Algoritmo escolhido: RandomChoice")
+    print("Algoritmo escolhido: SnakeChoice")
     for i in range(nIterations):
         #Executar somente um de cada vez; comentar os outros
-        #currentNumber = naiveChoice(newGraph)
-        currentNumber = randomChoice(newGraph)
-        #currentNumber = snakeChoice(newGraph)
+        #currentNumber = naiveChoice(thisGraph)
+        #currentNumber = randomChoice(thisGraph)
+        currentNumber = snakeChoice(thisGraph)
 
         #Após calcular o número de iterações, reseta o grafo e anota quantas foram as iterações
-        #TODO Consertar resetGraph()
-        resetGraph()
+        thisGraph.resetGraph()
         iterationsList.append(currentNumber)
+        if i % (nIterations / 10) == 0:
+            print("\nWorking...")
     
     #Calcula a média de iterações do algoritmo
     iterationsAverage = sum(iterationsList) / len(iterationsList)
@@ -225,7 +233,7 @@ def generateAverageRuns():
 
     return iterationsAverage
 
-averageIterations = generateAverageRuns()
+averageIterations = generateAverageRuns(newGraph)
 print("\nMédia de iterações do algoritmo escolhido: ")
 print(averageIterations)
-'''
+#'''
