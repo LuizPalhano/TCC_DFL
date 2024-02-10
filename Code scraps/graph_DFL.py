@@ -92,6 +92,11 @@ class Graph:
             self.getNode(greaterNode).addNeighbor(self.getNode(lesserNode), self)
             for vertex in self.nodeByName.values():
                 vertex.updateCardinality()
+    
+    #Reinicializa o grafo para um estado sem arestas
+    def resetGraph(self):
+        for node in self.nodeByName.values():
+            node.resetNode()
 
 '''
 Classe Nó, representa os nós dentro do grafo. Cada nó tem um nome e um conjunto (set) de vizinhos de entrada e de saída.
@@ -150,3 +155,9 @@ class Node:
     #Atualiza a cardinalidade do vértice
     def updateCardinality(self):
         self.cardinality = len(self.incomingNeighbors) + len(self.outgoingNeighbors)
+    
+    #Reinicializa o nó para um nó vazio
+    def resetNode(self):
+        self.incomingNeighbors = set()
+        self.outgoingNeighbors = set()
+        self.updateCardinality()
