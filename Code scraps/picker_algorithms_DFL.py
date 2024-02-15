@@ -208,8 +208,14 @@ Bloco de execução repetida dos algoritmos; não executar ao mesmo tempo que o 
 #Executa o algoritmo escolhido um número grande de vezes para normalizar o número médio de
 #iterações que cada um requer. Retorna a média de iterações
 def generateAverageRuns(thisGraph):
+    #Número de vezes que o algoritmo é executado em sequência
     nIterations = 10000
+    #Armazena os resultados para permitir o cálculo do tempo médio de execução
     iterationsList = []
+    #Guarda o tempo mínimo de execução do algoritmo
+    lowIterations = 1000000
+    #Guarda o tempo máximo de execução do algoritmo
+    highIterations = -1
     
     #Executa o algoritmo escolhido nIterations vezes
     #print("Algoritmo escolhido: NaiveChoice")
@@ -224,6 +230,10 @@ def generateAverageRuns(thisGraph):
         #Após calcular o número de iterações, reseta o grafo e anota quantas foram as iterações
         thisGraph.resetGraph()
         iterationsList.append(currentNumber)
+        if currentNumber <= lowIterations:
+            lowIterations = currentNumber
+        if currentNumber >= highIterations:
+            highIterations = currentNumber
         if i % (nIterations / 10) == 0:
             print("\nWorking...")
     
@@ -231,9 +241,13 @@ def generateAverageRuns(thisGraph):
     iterationsAverage = sum(iterationsList) / len(iterationsList)
     iterationsAverage = math.floor(iterationsAverage)
 
-    return iterationsAverage
+    return iterationsAverage, lowIterations, highIterations
 
-averageIterations = generateAverageRuns(newGraph)
+averageIterations, lowIterations, highIterations = generateAverageRuns(newGraph)
 print("\nMédia de iterações do algoritmo escolhido: ")
 print(averageIterations)
+print("\nTempo baixo de execução:")
+print(lowIterations)
+print("\nTempo alto de execução:")
+print(highIterations)
 #'''
