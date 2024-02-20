@@ -74,13 +74,13 @@ newGraph.addNode(node_I.name, node_I.incomingNeighbors, node_I.outgoingNeighbors
 newGraph.addNode(node_J.name, node_J.incomingNeighbors, node_J.outgoingNeighbors)
 
 #Função auxiliar de checagem de completude do grafo
-#Quando o grafo é completo, todas as cardinalidades são iguais a N - 1; se uma for diferente, não está completo
+#Quando o grafo é completo, todas os graus são iguais a N - 1; se um for diferente, não está completo
 #Complexidade: O(n) (itera uma vez por cada nó do grafo)
 def checkCompleteness(candidateGraph):
-    cardinalities = candidateGraph.getCardinalityList()
-    highestCardinality = candidateGraph.graphSize - 1
-    for cardinality in cardinalities:
-        if cardinality != highestCardinality:
+    degrees = candidateGraph.getDegreeList()
+    highestDegree = candidateGraph.graphSize - 1
+    for degree in degrees:
+        if degree != highestDegree:
             return False
     return True
 

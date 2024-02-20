@@ -14,7 +14,7 @@ class Graph:
         #Nós do grafo também são guardados em uma lista para acesso da função randomChoice. Guardados pelo nome, em string
         #Não é acessado por nenhum outro lugar
         self.nodesList = []
-        #Tamanho do grafo é guardado como um inteiro. Acessado para calcular a cardinalidade máxima
+        #Tamanho do grafo é guardado como um inteiro. Acessado para calcular o grau máximo
         self.graphSize = 0
     
     #Retorna um dado nó. Retorna o tipo Node, caso o node exista; não retorna nada, do contrário.
@@ -70,28 +70,28 @@ class Graph:
             for node in self.nodeByName:
                 self.showNode(node)
 
-    #Gera uma lista que contém as cardinalidades dos vértices ordenadas.
-    def getCardinalityList(self):
+    #Gera uma lista que contém os graus dos vértices ordenados.
+    def getDegreeList(self):
         if len(self.nodeByName) == 0:
             print("\nGraph is empty.")
         else:
             ret = []
             for vertex in self.nodeByName.values():
-                vertex.updateCardinality()
-                ret.append(vertex.cardinality)
+                vertex.updateDegree()
+                ret.append(vertex.degree)
             ret.sort()
             return ret
     
     #Cria uma cópia temporária do próprio grafo para adicionar arestas temporárias. Caso a operação de adição de aresta tenha sucesso,
     #faz a adição de aresta no grafo real. Do contrário, aborta o processo
-    #Caso o processo tenha sucesso, também atualiza a cardinalidade dos vértices do grafo
+    #Caso o processo tenha sucesso, também atualiza o grau dos vértices do grafo
     #Recebe o nome de dois vértices e cria a aresta entre eles, além de todas as outras que são consequência
     def addEdge(self, greaterNode, lesserNode):
         tempGraph = copy.deepcopy(self)
         if tempGraph.getNode(greaterNode).addNeighbor(tempGraph.getNode(lesserNode), self):
             self.getNode(greaterNode).addNeighbor(self.getNode(lesserNode), self)
             for vertex in self.nodeByName.values():
-                vertex.updateCardinality()
+                vertex.updateDegree()
     
     #Reinicializa o grafo para um estado sem arestas
     def resetGraph(self):
@@ -116,7 +116,7 @@ class Node:
         #Vizinhos de saída do nó; guardado como um conjunto de strings
         self.outgoingNeighbors = outgoingNeighbors
         #Cardinalidade do nó; guardada como um inteiro
-        self.cardinality = 0
+        self.degree = 0
     
     #Adiciona um novo vizinho de saída ao nó. Ao fazer isso:
     #Cada vizinho de entrada do nó atual e o próprio nó atual passam a ser vizinhos de entrada do novo nó; ciclo aborta o processo.
@@ -147,17 +147,17 @@ class Node:
                 return False
         return True
     
-    #Mostra a cardinalidade do vértice
-    def showCardinality(self):
+    #Mostra o grau do vértice
+    def showDegree(self):
         print("\nCardinalidade do vértice " + self.name + ":")
-        print(self.cardinality)
+        print(self.degree)
 
-    #Atualiza a cardinalidade do vértice
-    def updateCardinality(self):
-        self.cardinality = len(self.incomingNeighbors) + len(self.outgoingNeighbors)
+    #Atualiza o grau do vértice
+    def updateDegree(self):
+        self.degree = len(self.incomingNeighbors) + len(self.outgoingNeighbors)
     
     #Reinicializa o nó para um nó vazio
     def resetNode(self):
         self.incomingNeighbors = set()
         self.outgoingNeighbors = set()
-        self.updateCardinality()
+        self.updateDegree()
