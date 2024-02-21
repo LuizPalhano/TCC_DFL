@@ -209,18 +209,22 @@ Bloco de execução repetida dos algoritmos; não executar ao mesmo tempo que o 
 #iterações que cada um requer. Retorna a média de iterações
 def generateAverageRuns(thisGraph):
     #Número de vezes que o algoritmo é executado em sequência
-    nIterations = 10000
+    nIterations = 100000
     #Armazena os resultados para permitir o cálculo do tempo médio de execução
     iterationsList = []
     #Guarda o tempo mínimo de execução do algoritmo
     lowIterations = 1000000
     #Guarda o tempo máximo de execução do algoritmo
     highIterations = -1
+    #Guarda o número de vezes que o algoritmo foi na média ou mais rápido
+    avgOrBetter = 0.0
     
     #Executa o algoritmo escolhido nIterations vezes
     #print("Algoritmo escolhido: NaiveChoice")
-    #print("Algoritmo escolhido: RandomChoice")
-    print("Algoritmo escolhido: SnakeChoice")
+    print("Algoritmo escolhido: RandomChoice")
+    #print("Algoritmo escolhido: SnakeChoice")
+    print("Número de nós:")
+    print(thisGraph.graphSize)
     for i in range(nIterations):
         #Executar somente um de cada vez; comentar os outros
         #currentNumber = naiveChoice(thisGraph)
@@ -240,14 +244,21 @@ def generateAverageRuns(thisGraph):
     #Calcula a média de iterações do algoritmo
     iterationsAverage = sum(iterationsList) / len(iterationsList)
     iterationsAverage = math.floor(iterationsAverage)
+    #Calcula quantas vezes o algoritmo atingiu a média ou melhor
+    for current in iterationsList:
+        if current <= iterationsAverage:
+            avgOrBetter += 1
+    avgOrBetterResults = avgOrBetter / nIterations
 
-    return iterationsAverage, lowIterations, highIterations
+    return iterationsAverage, lowIterations, highIterations, avgOrBetterResults
 
-averageIterations, lowIterations, highIterations = generateAverageRuns(newGraph)
+averageIterations, lowIterations, highIterations, avgOrBetterTime = generateAverageRuns(newGraph)
 print("\nMédia de iterações do algoritmo escolhido: ")
 print(averageIterations)
 print("\nTempo baixo de execução:")
 print(lowIterations)
 print("\nTempo alto de execução:")
 print(highIterations)
+print("\nProporção de vezes que foi na média ou mais rápido:")
+print(avgOrBetterTime)
 #'''
