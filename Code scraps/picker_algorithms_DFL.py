@@ -176,6 +176,31 @@ def snakeChoice(thisGraph):
     #Ao final, retorna quantos passos deu
     return nIterations
 
+#NaiveChoice, mas conta se a iteração terminou antes do algoritmo ou não
+def extraNaiveChoice(thisGraph):
+    nIterations = 0
+    hasOvershot = False
+    #Para cada nó do grafo
+    for node in thisGraph.nodesList:
+        #Pergunta para cada outro nó do grafo a relação entre os dois
+        for neighbor in thisGraph.nodesList:
+            #Se terminou, mas não parou, então passou do prazo
+            if checkCompleteness(thisGraph):
+                hasOvershot = True
+            #A cada iteração, aumenta em 1 o número de iterações
+            nIterations += 1
+            #Exceto ele próprio
+            if node == neighbor:
+                continue
+            #Moeda honesta é usada para simular a escolha entre um ou outro
+            if random.randint(0, 1):
+                thisGraph.addEdge(node, neighbor)
+            else:
+                thisGraph.addEdge(neighbor, node)
+    
+    #Ao final, retorna quantos passos deu e se completou o grafo antes de terminar
+    return nIterations, hasOvershot
+
 
 ''''
 Bloco de execução dos algoritmos; não executar ao mesmo tempo que o bloco de execução repetida
@@ -218,18 +243,24 @@ def generateAverageRuns(thisGraph):
     highIterations = -1
     #Guarda o número de vezes que o algoritmo foi na média ou mais rápido
     avgOrBetter = 0.0
+    #Guarda o número de vezes que o naiveChoice passou do prazo
+    totalOvershoots = 0.0
+    #Guarda se o naiveChoice passou do prazo
+    currentOvershoot = False
     
     #Executa o algoritmo escolhido nIterations vezes
     #print("Algoritmo escolhido: NaiveChoice")
     print("Algoritmo escolhido: RandomChoice")
     #print("Algoritmo escolhido: SnakeChoice")
+    #print("Algoritmo escolhido: extraNaiveChoice")
     print("Número de nós:")
     print(thisGraph.graphSize)
     for i in range(nIterations):
         #Executar somente um de cada vez; comentar os outros
         #currentNumber = naiveChoice(thisGraph)
-        #currentNumber = randomChoice(thisGraph)
-        currentNumber = snakeChoice(thisGraph)
+        currentNumber = randomChoice(thisGraph)
+        #currentNumber = snakeChoice(thisGraph)
+        #currentNumber, currentOvershoot = extraNaiveChoice(thisGraph)
 
         #Após calcular o número de iterações, reseta o grafo e anota quantas foram as iterações
         thisGraph.resetGraph()
@@ -238,6 +269,8 @@ def generateAverageRuns(thisGraph):
             lowIterations = currentNumber
         if currentNumber >= highIterations:
             highIterations = currentNumber
+        if currentOvershoot:
+            totalOvershoots += 1
         if i % (nIterations / 10) == 0:
             print("\nWorking...")
     
@@ -249,10 +282,13 @@ def generateAverageRuns(thisGraph):
         if current <= iterationsAverage:
             avgOrBetter += 1
     avgOrBetterResults = avgOrBetter / nIterations
+    #Calcula quantas vezes o naiveChoice passou do prazo
+    if totalOvershoots >= 1:
+        totalOvershoots = totalOvershoots / nIterations
 
-    return iterationsAverage, lowIterations, highIterations, avgOrBetterResults
+    return iterationsAverage, lowIterations, highIterations, avgOrBetterResults, totalOvershoots
 
-averageIterations, lowIterations, highIterations, avgOrBetterTime = generateAverageRuns(newGraph)
+averageIterations, lowIterations, highIterations, avgOrBetterTime, naiveOvershoots = generateAverageRuns(newGraph)
 print("\nMédia de iterações do algoritmo escolhido: ")
 print(averageIterations)
 print("\nTempo baixo de execução:")
@@ -261,4 +297,7 @@ print("\nTempo alto de execução:")
 print(highIterations)
 print("\nProporção de vezes que foi na média ou mais rápido:")
 print(avgOrBetterTime)
+if naiveOvershoots >= 1:
+    print("\nProporção de vezes que naiveChoice completou o grafo e continuou executando:")
+    print(naiveOvershoots)
 #'''
