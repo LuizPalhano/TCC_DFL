@@ -223,15 +223,15 @@ def testAddEdge():
     print("\nMostra o grafo com todas as arestas")
     secondGraph.showGraph()
 
-#Testa getCardinalityList
-def testGetCardinalityList():
+#Testa getDegreeList
+def testGetDegreeList():
     print("=========================")
     print("=========================")
-    print("Testa getCardinalityList")
+    print("Testa getDegreeList")
     print("=========================")
     print("=========================")
 
-    lst = secondGraph.getCardinalityList()
+    lst = secondGraph.getDegreeList()
     print("Lista de cardinalidades:")
     print(lst)
 
@@ -269,7 +269,7 @@ def testGraph():
     
     testAddEdge()
 
-    testGetCardinalityList()
+    testGetDegreeList()
 
 '''
 TESTES DE NODE
@@ -311,26 +311,26 @@ def testAddValidNeighbor():
     print("\nMostra o grafo com todas as arestas")
     secondGraph.showGraph()
 
-#Testa showCardinality
-def testShowCardinality():
+#Testa showDegree
+def testShowDegree():
     print("\n=========================")
     print("=========================")
-    print("Testa showCardinality")
+    print("Testa showDegree")
     print("=========================")
     print("=========================")
     for vertex in secondGraph.nodeByName.values():
-        vertex.showCardinality()
+        vertex.showDegree()
 
-#Testa updateCardinality
-def testUpdateCardinality():
+#Testa updateDegree
+def testUpdateDegree():
     print("\n=========================")
     print("=========================")
-    print("Testa updateCardinality")
+    print("Testa updateDegree")
     print("=========================")
     print("=========================")
     for vertex in secondGraph.nodeByName.values():
-        vertex.updateCardinality()
-        vertex.showCardinality()
+        vertex.updateDegree()
+        vertex.showDegree()
 
 #Testa todos os métodos de Node
 def testNode():
@@ -341,8 +341,8 @@ def testNode():
     print("=========================")
 
     #testAddValidNeighbor()
-    testShowCardinality()
-    #testUpdateCardinality()
+    testShowDegree()
+    #testUpdateDegree()
 
 #Testa todos os métodos
 def testAll():
