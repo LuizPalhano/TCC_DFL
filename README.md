@@ -1,9 +1,55 @@
-# TCC_DFL
+import React from 'react';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-Repositório para armazenar o trabalho de conclusão de curso (TCC) dos alunos:
+const Start = () => {
+  const handlePress = () => {
+    // Adicione aqui a lógica para iniciar o jogo
+    // Alert.alert('Game Started!');
+  };
 
-Daniel Pinheiro Rodrigues (118019420) - dankratos8@gmail.com | danielpr@dcc.ufrj.br
+  const styles = StyleSheet.create({
+    start: {
+      flex: 1,
+      backgroundColor: '#ffffff',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    allAccountsWrapper: {
+      backgroundColor: '#ffffff',
+      height: 812,
+      width: 375,
+    },
+    allAccounts: {
+      backgroundColor: '#F8777D', // Usando um tom de vermelho similar
+      height: 812,
+      position: 'relative',
+    },
+    textWrapper: {
+      color: '#ffffff',
+      fontFamily: 'Asap-Bold', // A fonte exata pode não estar disponível nativamente
+      fontSize: 60,
+      fontWeight: '700',
+      letterSpacing: -1.2,
+      lineHeight: 70, // Ajuste conforme necessário
+      textAlign: 'center',
+      textShadowColor: '#00000040',
+      textShadowOffset: { width: 0, height: 0 },
+      textShadowRadius: 7,
+      position: 'absolute',
+      top: 247,
+      width: 375,
+    },
+  });
 
-Filipe Pierri de Mendonça Nobre (118033026) - fpmnobre@gmail.com | filipepmn@dcc.ufrj.br
+  return (
+    <TouchableOpacity onPress={handlePress} style={styles.start}>
+      <View style={styles.allAccountsWrapper}>
+        <View style={styles.allAccounts}>
+          <Text style={styles.textWrapper}>TOUCH THE SCREEN TO START THE GAME</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
 
-Luiz Henrique Göpfert Palhano Leal (118061663) - luizpalhano.2000@gmail.com | luizhgpl@dcc.ufrj.br
+export default Start;
