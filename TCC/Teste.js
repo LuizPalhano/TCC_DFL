@@ -1,11 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const Start = ({ navigation }) => {
-  const handlePress = () => {
-    navigation.navigate('Teste');
-  };
-
+const Teste = () => {
   const styles = StyleSheet.create({
     start: {
       flex: 1,
@@ -13,21 +9,21 @@ const Start = ({ navigation }) => {
       alignItems: 'center',
     },
     allAccountsWrapper: {
-      backgroundColor: '#FF0000',
+      backgroundColor: '#0000FF', // Defina a cor azul aqui para Teste.js
       height: 812,
       width: 375,
     },
     allAccounts: {
-      backgroundColor: '#F8777D',
+      backgroundColor: '#F8777D', 
       position: 'relative',
     },
     textWrapper: {
       color: '#ffffff',
-      fontFamily: 'sans-serif',
+      fontFamily: 'Asap-Bold', 
       fontSize: 60,
       fontWeight: '700',
       letterSpacing: -1.2,
-      lineHeight: 70,
+      lineHeight: 70, 
       textAlign: 'center',
       textShadowColor: '#00000040',
       textShadowOffset: { width: 0, height: 0 },
@@ -39,14 +35,14 @@ const Start = ({ navigation }) => {
   });
 
   return (
-    <TouchableOpacity onPress={handlePress} style={styles.start}>
+    <View style={styles.start}>
       <View style={styles.allAccountsWrapper}>
         <View style={styles.allAccounts}>
-          <Text style={styles.textWrapper}>CLIQUE AQUI PARA JOGAR</Text>
+          <Text style={styles.textWrapper}>TESTE</Text>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 
-export default Start;
+export default Teste;
