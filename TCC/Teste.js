@@ -1,36 +1,29 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const Start = () => {
-  const handlePress = () => {
-    // Adicione aqui a lógica para iniciar o jogo
-    // Alert.alert('Game Started!');
-  };
-
+const Teste = () => {
   const styles = StyleSheet.create({
     start: {
       flex: 1,
-      backgroundColor: '#ffffff',
       justifyContent: 'center',
       alignItems: 'center',
     },
     allAccountsWrapper: {
-      backgroundColor: '#ffffff',
+      backgroundColor: '#0000FF', // Defina a cor azul aqui para Teste.js
       height: 812,
       width: 375,
     },
     allAccounts: {
-      backgroundColor: '#F8777D', // Usando um tom de vermelho similar
-      height: 812,
+      backgroundColor: '#F8777D', 
       position: 'relative',
     },
     textWrapper: {
       color: '#ffffff',
-      fontFamily: 'Asap-Bold', // A fonte exata pode não estar disponível nativamente
+      fontFamily: 'Asap-Bold', 
       fontSize: 60,
       fontWeight: '700',
       letterSpacing: -1.2,
-      lineHeight: 70, // Ajuste conforme necessário
+      lineHeight: 70, 
       textAlign: 'center',
       textShadowColor: '#00000040',
       textShadowOffset: { width: 0, height: 0 },
@@ -42,14 +35,14 @@ const Start = () => {
   });
 
   return (
-    <TouchableOpacity onPress={handlePress} style={styles.start}>
+    <View style={styles.start}>
       <View style={styles.allAccountsWrapper}>
         <View style={styles.allAccounts}>
-          <Text style={styles.textWrapper}>TOUCH THE SCREEN TO START THE GAME</Text>
+          <Text style={styles.textWrapper}>TESTE</Text>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 
-export default Start;
+export default Teste;

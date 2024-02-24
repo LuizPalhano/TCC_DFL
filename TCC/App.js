@@ -1,50 +1,52 @@
-import { StyleSheet, Text, View, Button, TextInput, Alert } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-//Função root; rodada sempre e sempre primeiro
-export default function App() {
+const Start = ({ navigation }) => {
+  const handlePress = () => {
+    navigation.navigate('Teste');
+  };
+
+  const styles = StyleSheet.create({
+    start: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    allAccountsWrapper: {
+      backgroundColor: '#FF0000',
+      height: 812,
+      width: 375,
+    },
+    allAccounts: {
+      backgroundColor: '#F8777D',
+      position: 'relative',
+    },
+    textWrapper: {
+      color: '#ffffff',
+      fontFamily: 'sans-serif',
+      fontSize: 60,
+      fontWeight: '700',
+      letterSpacing: -1.2,
+      lineHeight: 70,
+      textAlign: 'center',
+      textShadowColor: '#00000040',
+      textShadowOffset: { width: 0, height: 0 },
+      textShadowRadius: 7,
+      position: 'absolute',
+      top: 247,
+      width: 375,
+    },
+  });
+
   return (
-    <View style = {styles.backgroundStyle}>
-      <View style = {{padding: '8%'}}></View>
-      <View style = {{alignItems: 'center'}}>
-        <Text style = {styles.textStyle}>Luffy será o rei dos piratas!</Text>
+    <TouchableOpacity onPress={handlePress} style={styles.start}>
+      <View style={styles.allAccountsWrapper}>
+        <View style={styles.allAccounts}>
+          <Text style={styles.textWrapper}>CLIQUE AQUI PARA JOGAR</Text>
+        </View>
       </View>
-      <View style = {{alignItems: 'center'}}>
-        <Button
-        title = "Press a button!"
-        onPress={() => Alert.alert('Button pressed')}
-        />
-      </View>
-    </View>
+    </TouchableOpacity>
   );
-}
+};
 
-
-
-//Stylesheet guarda os estilos do app
-const styles = StyleSheet.create({
-  //Estilo geral de fundo de tela
-  backgroundStyle: {
-    flex: 1,
-    backgroundColor: 'orange'
-  },
-
-  //Estilo geral de botão
-  buttonStyle: {
-    
-  },
-
-  //Estilo geral de caixa de input
-  inputStyle: {
-    flexDirection: 'column',
-    borderWidth: 2,
-    borderColor: 'gray',
-  },
-
-  //Estilo geral de bloco de texto
-  textStyle: {
-    padding: 15,
-    backgroundColor: '#0062ff',
-    textAlign: 'center',
-    width: '50%'
-  }
-});
+export default Start;
