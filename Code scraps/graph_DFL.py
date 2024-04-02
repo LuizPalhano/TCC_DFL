@@ -98,6 +98,67 @@ class Graph:
         for node in self.nodeByName.values():
             node.resetNode()
 
+    #Tenta adicionar uma aresta, mas primeiro confere se pode usando uma busca. Se não puder, não coloca. Se puder, coloca
+    #greaterNode e lesserNode são Strings
+    def addUnfilledEdge(self, greaterNode, lesserNode):
+        #DFS recebe um Node e retorna um Set de Strings
+        reachableFromLesser = self.DFS(self.getNode(lesserNode))
+        
+        #Verifica se o próprio nó é alcançável a partir do novo vizinho de baixo (se gera loop)
+        if greaterNode in reachableFromLesser:
+            return False
+        
+        #Se não gerar loop, adiciona a aresta
+        self.getNode(greaterNode).outgoingNeighbors.add(lesserNode)
+        self.getNode(lesserNode).incomingNeighbors.add(greaterNode)
+        return True
+    
+    #Funções de DFS para fazer a busca usada em addUnfilledEdge
+    #currentNeighbor é um Node; visitedNeighbors é um Set de Strings
+    def DFSUtil(self, currentNeighbor, visitedNeighbors):
+        #Vizinhos visitados são guardados por nome
+        visitedNeighbors.add(currentNeighbor.name)
+
+        #Retorna um Set de Strings
+        outNeighbors = self.nodeByName[currentNeighbor.name].outgoingNeighbors
+
+        #Procura em um Set de Strings
+        for neighborName in outNeighbors:
+            neighbor = self.getNode(neighborName)
+            if neighborName not in visitedNeighbors:
+                self.DFSUtil(neighbor, visitedNeighbors)
+
+    #Efetivamente realiza o DFS
+    def DFS(self, initialNeighbor):
+        visitedNeighbors = set()
+        self.DFSUtil(initialNeighbor, visitedNeighbors)
+        return visitedNeighbors
+    
+    #Preenche o grafo com todas as arestas implícitas que não foram colocadas com addUnfilledEdge
+    def fillOutGraph(self):
+        #Guarda as arestas a serem adicionadas em um padrão Node : List de Node
+        nodesToAdd = dict()
+
+        #Para cada nó no grafo
+        for node in self.nodeByName.values():
+            #Adiciona um elemento no dicionário para si próprio
+            nodesToAdd.update({node : list()})
+            #DFS retorna um Set de Strings
+            reachableLessers = self.DFS(node)
+            #Preenche a lista de Nodes com todos os nós alcançáveis a partir de si próprio
+            for lesser in reachableLessers:
+                nodesToAdd[node].append(self.getNode(lesser))
+        
+        #Para cada nó do grafo
+        for greaterNode in nodesToAdd.keys():
+            #Adiciona uma aresta para cada nó alcançável a partir dele próprio, exceto ele próprio
+            for lesserNode in nodesToAdd[greaterNode]:
+                if greaterNode.name == lesserNode.name:
+                    continue
+                self.getNode(greaterNode.name).outgoingNeighbors.add(lesserNode.name)
+                self.getNode(lesserNode.name).incomingNeighbors.add(greaterNode.name)
+
+
 '''
 Classe Nó, representa os nós dentro do grafo. Cada nó tem um nome e um conjunto (set) de vizinhos de entrada e de saída.
 
