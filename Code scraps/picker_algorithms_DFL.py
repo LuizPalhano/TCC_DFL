@@ -149,7 +149,7 @@ newGraph.addNode(node_M.name, node_M.incomingNeighbors, node_M.outgoingNeighbors
 newGraph.addNode(node_N.name, node_N.incomingNeighbors, node_N.outgoingNeighbors)
 newGraph.addNode(node_O.name, node_O.incomingNeighbors, node_O.outgoingNeighbors)
 #Quinze nós
-'''
+#'''
 
 newGraph.addNode(node_P.name, node_P.incomingNeighbors, node_P.outgoingNeighbors)
 newGraph.addNode(node_Q.name, node_Q.incomingNeighbors, node_Q.outgoingNeighbors)
@@ -209,6 +209,14 @@ def fillOutSubgroup(group, candidateGraph):
                 #Coloca a aresta ba
                 candidateGraph.addUnfilledEdge(group[j], group[i])
 
+#Função auxiliar de contagem de objetos alcançados
+def objectsReached(candidateGraph):
+    degrees = candidateGraph.getDegreeList()
+    total = 0
+    for degree in degrees:
+        if degree > 0:
+            total += 1
+    return total
 
 '''
 Define as funções de preenchimento do grafo
@@ -451,9 +459,10 @@ def randomChoiceMaxSteps(thisGraph, maxSteps):
         #A cada iteração, aumenta em 1 o número de iterações
         nIterations += 1
     
-    #Ao final, retorna quantas arestas criou
+    #Ao final, retorna quantas arestas criou e quantos objetos foram alcançados
     thisGraph.fillOutGraph()
-    return edgesInGraph(thisGraph)
+    touchedObjects = objectsReached(thisGraph)
+    return edgesInGraph(thisGraph)/2, touchedObjects
 
 
 #Executa o snakeChoice até atingir o número máximo de passos, ou terminar; o que vier primeiro
@@ -484,9 +493,10 @@ def snakeChoiceMaxSteps(thisGraph, maxSteps):
         #A cada iteração, aumenta em 1 o número de iterações
         nIterations += 1
 
-    #Ao final, retorna quantas arestas criou
+    #Ao final, retorna quantas arestas criou e quantos objetos foram alcançados
     thisGraph.fillOutGraph()
-    return edgesInGraph(thisGraph)
+    touchedObjects = objectsReached(thisGraph)
+    return edgesInGraph(thisGraph)/2, touchedObjects
 
 
 #Preenche subgrupos completamente arbitrários até atingir o número máximo de passos, ou terminar; o que vier primeiro
@@ -507,9 +517,10 @@ def randomGroupMaxSteps(thisGraph, maxSteps):
         #A cada iteração, aumenta em 8 o número de iterações
         nIterations += 8
     
-    #Ao final, retorna quantas arestas criou
+    #Ao final, retorna quantas arestas criou e quantos objetos foram alcançados
     thisGraph.fillOutGraph()
-    return edgesInGraph(thisGraph)
+    touchedObjects = objectsReached(thisGraph)
+    return edgesInGraph(thisGraph)/2, touchedObjects
 
 
 #Preenche subgrupos arbitrários até atingir o número máximo de passos, ou terminar; o que vier primeiro
@@ -551,9 +562,10 @@ def snakeGroupMaxSteps(thisGraph, maxSteps):
         #A cada iteração, aumenta em 8 o número de iterações
         nIterations += 8
     
-    #Ao final, retorna quantas arestas criou
+    #Ao final, retorna quantas arestas criou e quantos objetos foram alcançados
     thisGraph.fillOutGraph()
-    return edgesInGraph(thisGraph)
+    touchedObjects = objectsReached(thisGraph)
+    return edgesInGraph(thisGraph)/2, touchedObjects
 
 '''
 Bloco de execução simples dos algoritmos; não executar ao mesmo tempo que o bloco de execução repetida
@@ -710,25 +722,28 @@ def generateAvgEdges(thisGraph):
     percentOfTests = 0
     #Armazena os resultados para permitir o cálculo do tempo médio de execução
     iterationsList = []
+    #Armazena os objetos alcançados para permitir o cálculo da média de objetos
+    objectsList = []
 
     #Bloco de escolha do algoritmo
-    print("Algoritmo escolhido: randomChoiceMaxSteps")
+    #print("Algoritmo escolhido: randomChoiceMaxSteps")
     #print("Algoritmo escolhido: snakeChoiceMaxSteps")
     #print("Algoritmo escolhido: randomGroupMaxSteps")
-    #print("Algoritmo escolhido: snakeGroupMaxSteps")
+    print("Algoritmo escolhido: snakeGroupMaxSteps")
 
     print(f"Número de nós: {thisGraph.graphSize}")
     print(f"Esforço máximo: {maxEffort}")
 
     for i in range(nIterations):
-        currentEdges = randomChoiceMaxSteps(thisGraph, maxEffort)
-        #currentEdges = snakeChoiceMaxSteps(thisGraph, maxEffort)
-        #currentEdges = randomGroupMaxSteps(thisGraph, maxEffort)
-        #currentEdges = snakeGroupMaxSteps(thisGraph, maxEffort)
+        #currentEdges, currentObjects = randomChoiceMaxSteps(thisGraph, maxEffort)
+        #currentEdges, currentObjects = snakeChoiceMaxSteps(thisGraph, maxEffort)
+        #currentEdges, currentObjects = randomGroupMaxSteps(thisGraph, maxEffort)
+        currentEdges, currentObjects = snakeGroupMaxSteps(thisGraph, maxEffort)
 
         #Após calcular o número de arestas, reseta o grafo e anota quantas foram as arestas
         thisGraph.resetGraph()
         iterationsList.append(currentEdges)
+        objectsList.append(currentObjects)
 
         if i % (nIterations / 100) == 0:
             percentOfTests += 1
@@ -740,9 +755,14 @@ def generateAvgEdges(thisGraph):
     avgEdges = sum(iterationsList) / len(iterationsList)
     avgEdges = math.floor(avgEdges)
 
-    #Executa o algoritmo escolhido nIterations vezes
-    return avgEdges
+    #Calcula a média de objetos alcançados pelo algoritmo
+    avgObjects = sum(objectsList) / len(objectsList)
+    avgObjects = math.floor(avgObjects)
 
-averageEdges = generateAvgEdges(newGraph)
+    #Executa o algoritmo escolhido nIterations vezes
+    return avgEdges, avgObjects
+
+averageEdges, averageObjects = generateAvgEdges(newGraph)
 print(f"\nMédia de arestas do algoritmo escolhido: {averageEdges}")
+print(f"\nMédia de objetos alcançados pelo algoritmo escolhido: {averageObjects}")
 #'''
