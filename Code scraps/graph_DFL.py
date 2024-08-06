@@ -178,6 +178,8 @@ class Node:
         self.outgoingNeighbors = outgoingNeighbors
         #Cardinalidade do nó; guardada como um inteiro
         self.degree = 0
+        #Cor do nó; usada para determinar a qual subgrupo o nó pertence
+        self.color = -1
     
     #Adiciona um novo vizinho de saída ao nó. Ao fazer isso:
     #Cada vizinho de entrada do nó atual e o próprio nó atual passam a ser vizinhos de entrada do novo nó; ciclo aborta o processo.
@@ -222,3 +224,4 @@ class Node:
         self.incomingNeighbors = set()
         self.outgoingNeighbors = set()
         self.updateDegree()
+        self.color = -1

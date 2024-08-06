@@ -149,7 +149,7 @@ newGraph.addNode(node_M.name, node_M.incomingNeighbors, node_M.outgoingNeighbors
 newGraph.addNode(node_N.name, node_N.incomingNeighbors, node_N.outgoingNeighbors)
 newGraph.addNode(node_O.name, node_O.incomingNeighbors, node_O.outgoingNeighbors)
 #Quinze nós
-#'''
+'''
 
 newGraph.addNode(node_P.name, node_P.incomingNeighbors, node_P.outgoingNeighbors)
 newGraph.addNode(node_Q.name, node_Q.incomingNeighbors, node_Q.outgoingNeighbors)
@@ -217,6 +217,42 @@ def objectsReached(candidateGraph):
         if degree > 0:
             total += 1
     return total
+
+#Função auxiliar de colorir o grafo
+def colorGraph(candidateGraph):
+    #Define a cor inicial com a qual o grafo vai começar a ser preenchido
+    currentColor = 0
+
+    for node in candidateGraph.nodeByName.values():
+        #Se o nó não estiver colorido, colore de uma cor nova
+        #Sobrescreve os nós abaixo, mas o que nos interessa é só quantos nós
+        #pertencem a cada cor, não a cor em si
+        if node.color < 0:
+            currentColor += 1
+            children = candidateGraph.DFS(node)
+            for child in children:
+                currentChild = candidateGraph.nodeByName[child]
+                currentChild.color = currentColor
+        #Se o nó já estiver colorido, não precisa recolorir
+        #Não precisa colorir os filhos também, porque se o nó já está colorido,
+        #então os filhos dele também estão
+    
+    #Depois que termina de colorir o grafo, gera um dicionário que guarda as cores
+    #dos nós e o número de nós daquela cor
+    resultColors = {}
+
+    #Para cada nó no grafo
+    for node in candidateGraph.nodeByName.values():
+        #Se a cor do nó ainda não está no dicionário, adiciona
+        if node.color not in resultColors.keys():
+            resultColors[node.color] = 1
+        #Se a cor está presente, aumenta o número de nós com a cor em 1
+        else:
+            resultColors[node.color] = resultColors[node.color] + 1
+    
+    #Retorna um dicionário no formato {(int) color : (int) nVérticesDaCor}
+    return resultColors
+
 
 '''
 Define as funções de preenchimento do grafo
@@ -724,6 +760,10 @@ def generateAvgEdges(thisGraph):
     iterationsList = []
     #Armazena os objetos alcançados para permitir o cálculo da média de objetos
     objectsList = []
+    #Armazena os tamanhos de subgrupos para calcular o tamanho médio e o maior
+    colorsList = []
+    #Armazena o maior tamanho de subgrupo
+    maxSubgroupSize = -1
 
     #Bloco de escolha do algoritmo
     #print("Algoritmo escolhido: randomChoiceMaxSteps")
@@ -740,6 +780,17 @@ def generateAvgEdges(thisGraph):
         #currentEdges, currentObjects = randomGroupMaxSteps(thisGraph, maxEffort)
         currentEdges, currentObjects = snakeGroupMaxSteps(thisGraph, maxEffort)
 
+        #Colore o grafo para contar quantos objetos existem em cada subgrupo
+        currentColors = colorGraph(thisGraph)
+        #Conta os subgrupos para ver os tamanhos e maior tamanho
+        for subgroupSize in currentColors.values():
+            #Conta só os subgrupos não triviais
+            if subgroupSize > 1:
+                colorsList.append(subgroupSize)
+            #Se achar um subgrupo maior do que o máximo atual, registra
+            if subgroupSize > maxSubgroupSize:
+                maxSubgroupSize = subgroupSize
+
         #Após calcular o número de arestas, reseta o grafo e anota quantas foram as arestas
         thisGraph.resetGraph()
         iterationsList.append(currentEdges)
@@ -754,15 +805,22 @@ def generateAvgEdges(thisGraph):
     #Calcula a média de iterações do algoritmo
     avgEdges = sum(iterationsList) / len(iterationsList)
     avgEdges = math.floor(avgEdges)
+    
+    #Armazena a média de tamanho de subgrupo
+    avgSubgroupSize = sum(colorsList) / len(colorsList)
+    avgSubgroupSize = math.floor(avgSubgroupSize)
 
     #Calcula a média de objetos alcançados pelo algoritmo
     avgObjects = sum(objectsList) / len(objectsList)
     avgObjects = math.floor(avgObjects)
 
     #Executa o algoritmo escolhido nIterations vezes
-    return avgEdges, avgObjects
+    return avgEdges, avgObjects, avgSubgroupSize, maxSubgroupSize, len(colorsList)
 
-averageEdges, averageObjects = generateAvgEdges(newGraph)
+averageEdges, averageObjects, averageSubgroup, largestSubgroup, colorsListSize = generateAvgEdges(newGraph)
 print(f"\nMédia de arestas do algoritmo escolhido: {averageEdges}")
 print(f"\nMédia de objetos alcançados pelo algoritmo escolhido: {averageObjects}")
+print(f"\nTamanho médio dos subgrupos não triviais do grafo: {averageSubgroup}")
+print(f"\nTamanho máximo dos subgrupos não triviais do grafo: {largestSubgroup}")
+print(f"\nNúmero de subgrupos não triviais encontrados: {colorsListSize}")
 #'''
